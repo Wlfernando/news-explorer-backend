@@ -9,3 +9,12 @@ exports.createUser = function createUser(req, res, next) {
     .then((user) => res.send(user))
     .catch(next);
 };
+
+exports.signIn = function signIn(req, res, next) {
+  const { password, email } = req.body;
+
+  User.findByCredencials({ password, email })
+    .then((user) => {
+      res.send(user);
+    });
+};

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { validateEmailPattern } = require('../lib/utils');
+const { validateEmailPattern, findByCredencials } = require('../lib/utils');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -21,5 +21,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+userSchema.statics.findByCredencials = findByCredencials;
 
 module.exports = mongoose.model('user', userSchema);
