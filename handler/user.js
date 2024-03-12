@@ -16,5 +16,6 @@ exports.signIn = function signIn(req, res, next) {
   User.findByCredencials({ password, email })
     .then((user) => {
       res.send(user);
-    });
+    })
+    .catch(next);
 };
