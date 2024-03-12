@@ -29,3 +29,9 @@ exports.getArticles = function getArticles(req, res, next) {
     .then((articles) => res.send(articles))
     .catch(next)
 };
+
+exports.deleteArticle = function deleteArticle(req, res, next) {
+  Article.findByIdAndDelete(req.params.articleId)
+    .then(() => res.send())
+    .catch(next);
+};
