@@ -22,3 +22,10 @@ exports.createArticle = function createArticle(req, res, next) {
     .then(() => res.send())
     .catch(next);
 };
+
+exports.getArticles = function getArticles(req, res, next) {
+  Article.find({owner: req.user._id})
+    .sort({createdAt: -1})
+    .then((articles) => res.send(articles))
+    .catch(next)
+};
