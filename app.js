@@ -1,9 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cards = require('./route/cards');
 const { createUser, signIn, getMe } = require('./handler/user');
 const hasError = require('./middleware/hasError');
 const authorize = require('./middleware/authorize');
+const articlesRouter = require('./route/articles');
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -18,9 +18,9 @@ app.post('/signin', signIn);
 
 app.use(authorize);
 
-app.use('/users/me', getMe);
+app.get('/users/me', getMe);
 
-app.use('/cards', cards);
+app.use('/articles', articlesRouter);
 
 app.use(hasError);
 
