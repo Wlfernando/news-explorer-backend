@@ -19,7 +19,7 @@ exports.createArticle = function createArticle(req, res, next) {
     url,
     owner: req.user._id,
   })
-    .then(() => res.send())
+    .then(() => res.sendStatus(201))
     .catch(next);
 };
 

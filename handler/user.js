@@ -13,7 +13,7 @@ exports.createUser = function createUser(req, res, next) {
 
   bcrypt.hash(password, 10)
     .then((hash) => User.create({ name, email, password: hash }))
-    .then(() => res.send())
+    .then(() => res.sendStatus(201))
     .catch(next);
 };
 
