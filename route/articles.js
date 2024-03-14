@@ -1,7 +1,8 @@
 const articlesRouter = require('express').Router();
 const { createArticle, getArticles, deleteArticle } = require('../handler/article');
+const { articleValidator } = require('../lib/const');
 
-articlesRouter.post('', createArticle);
+articlesRouter.post('', articleValidator, createArticle);
 
 articlesRouter.get('', getArticles);
 
