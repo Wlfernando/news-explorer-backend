@@ -24,10 +24,10 @@ exports.createArticle = function createArticle(req, res, next) {
 };
 
 exports.getArticles = function getArticles(req, res, next) {
-  Article.find({owner: req.user._id})
-    .sort({createdAt: -1})
+  Article.find({ owner: req.user._id })
+    .sort({ createdAt: -1 })
     .then((articles) => res.send(articles))
-    .catch(next)
+    .catch(next);
 };
 
 exports.deleteArticle = function deleteArticle(req, res, next) {

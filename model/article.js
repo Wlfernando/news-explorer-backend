@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const config = {
   type: String,
   required: true,
-}
+};
 
 const articleSchema = new mongoose.Schema({
   keyWord: config,
