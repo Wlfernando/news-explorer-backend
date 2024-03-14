@@ -1,18 +1,21 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const cors = require('cors');
 require('dotenv').config();
 const { createUser, signIn, getMe } = require('./handler/user');
 const hasError = require('./middleware/hasError');
 const authorize = require('./middleware/authorize');
 const articlesRouter = require('./route/articles');
-const { signupValidator, signinValidator } = require('./lib/const');
+const { signupValidator, signinValidator, allowedOrigins } = require('./lib/const');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 
 const app = express();
 const { PORT = 3001 } = process.env;
 
 mongoose.connect('mongodb://127.0.0.1:27017/newsApi');
+
+app.use(cors({ origin: allowedOrigins }));
 
 app.use(express.json());
 
