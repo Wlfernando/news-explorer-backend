@@ -9,6 +9,7 @@ const authorize = require('./middleware/authorize');
 const articlesRouter = require('./route/articles');
 const { signupValidator, signinValidator, allowedOrigins } = require('./lib/const');
 const { requestLogger, errorLogger } = require('./middleware/logger');
+const notFound = require('./middleware/notFound');
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -30,6 +31,8 @@ app.use(authorize);
 app.get('/users/me', getMe);
 
 app.use('/articles', articlesRouter);
+
+app.use('*', notFound);
 
 app.use(errorLogger);
 

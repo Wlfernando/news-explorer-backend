@@ -3,9 +3,14 @@ const jwt = require('jsonwebtoken');
 const User = require('../model/user');
 const { key } = require('../lib/const');
 const CastError = require('../lib/error/CastError');
+const Conflict = require('../lib/error/Conflict');
 
 function hasNotFoundUser() {
   throw new CastError('User not found.');
+}
+
+function hasConflict() {
+  throw new Conflict('Already registered.');
 }
 
 exports.createUser = function createUser(req, res, next) {
@@ -13,7 +18,7 @@ exports.createUser = function createUser(req, res, next) {
 
   bcrypt.hash(password, 10)
     .then((hash) => User.create({ name, email, password: hash }))
-    .then(() => res.sendStatus(201))
+    .then(() => res.status(201).send({}), hasConflict)
     .catch(next);
 };
 

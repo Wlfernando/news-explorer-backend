@@ -12,6 +12,7 @@ const articleSchema = new mongoose.Schema({
   date: config,
   urlToImage: config,
   url: config,
+  source: config,
   createdAt: {
     type: Date,
     default: Date.now,

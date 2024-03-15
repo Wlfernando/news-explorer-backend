@@ -8,6 +8,7 @@ exports.createArticle = function createArticle(req, res, next) {
     date,
     urlToImage,
     url,
+    source,
   } = req.body;
 
   Article.create({
@@ -17,9 +18,10 @@ exports.createArticle = function createArticle(req, res, next) {
     date,
     urlToImage,
     url,
+    source,
     owner: req.user._id,
   })
-    .then(() => res.sendStatus(201))
+    .then(({_id}) => res.status(201).send({_id}))
     .catch(next);
 };
 
@@ -32,6 +34,6 @@ exports.getArticles = function getArticles(req, res, next) {
 
 exports.deleteArticle = function deleteArticle(req, res, next) {
   Article.findByIdAndDelete(req.params.articleId)
-    .then(() => res.send())
+    .then(() => res.send({}))
     .catch(next);
 };
