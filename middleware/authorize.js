@@ -2,14 +2,14 @@ const jwt = require('jsonwebtoken');
 const { key, rejected } = require('../lib/const');
 
 module.exports = function authorize(req, res, next) {
-  const { authorization } = req.headers;
+  const { cookies: { authentication } } = req;
 
-  if (!authorization || !authorization.startsWith('Bearer ')) {
+  if (!authentication || !authentication.startsWith('Bearer ')) {
     next(rejected);
     return;
   }
 
-  const token = authorization.replace('Bearer ', '');
+  const token = authentication.replace('Bearer ', '');
   try {
     req.user = jwt.verify(token, key);
   } catch (e) {

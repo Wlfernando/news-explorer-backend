@@ -3,36 +3,29 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const cors = require('cors');
 require('dotenv').config();
-const { createUser, signIn, getMe } = require('./handler/user');
+const { createUser, signIn } = require('./handler/user');
 const hasError = require('./middleware/hasError');
-const authorize = require('./middleware/authorize');
-const articlesRouter = require('./route/articles');
 const { signupValidator, signinValidator, allowedOrigins } = require('./lib/const');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const notFound = require('./middleware/notFound');
+const authorizationRouter = require('./route/authorization');
 
 const app = express();
 const { PORT = 3001 } = process.env;
 
 mongoose.connect('mongodb://127.0.0.1:27017/newsApi');
 
-app.use(cors({ origin: allowedOrigins }));
-
 app.use(express.json());
 
 app.use(requestLogger);
 
-app.post('/signup', signupValidator, createUser);
+app.post('/signup', cors({ origin: allowedOrigins }), signupValidator, createUser);
 
-app.post('/signin', signinValidator, signIn);
+app.post('/signin', cors({ origin: allowedOrigins, credentials: true }), signinValidator, signIn);
 
-app.use(authorize);
+app.use(authorizationRouter);
 
-app.get('/users/me', getMe);
-
-app.use('/articles', articlesRouter);
-
-app.use('*', notFound);
+app.use('*', cors({ origin: allowedOrigins }), notFound);
 
 app.use(errorLogger);
 

@@ -28,8 +28,19 @@ exports.signIn = function signIn(req, res, next) {
   User.findByCredencials({ password, email })
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, key, { expiresIn: '7d' });
+      const sevenDays = 36e5 * 24 * 7;
 
-      res.send({ token });
+      res
+        .status(204)
+        .cookie('storage-access', 'true', {
+          maxAge: sevenDays,
+        })
+        .cookie('authentication', `Bearer ${token}`, {
+          maxAge: sevenDays,
+          httpOnly: true,
+          sameSite: true,
+        })
+        .end()
     })
     .catch(next);
 };
@@ -39,3 +50,17 @@ exports.getMe = function getMe(req, res, next) {
     .then((user) => res.send(user), hasNotFoundUser)
     .catch(next);
 };
+
+exports.signOut = function signOut(req, res) {
+  res
+    .status(205)
+    .cookie('storage-access', 'false', {
+      maxAge: 0,
+    })
+    .cookie('authentication', `null`, {
+      maxAge: 0,
+      httpOnly: true,
+      sameSite: true,
+    })
+    .end()
+}
