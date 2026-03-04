@@ -5,7 +5,7 @@ const cors = require('cors');
 require('dotenv').config();
 const { createUser, signIn } = require('./handler/user');
 const hasError = require('./middleware/hasError');
-const { signupValidator, signinValidator, allowedOrigins } = require('./lib/const');
+const { signupValidator, signinValidator, allowedOrigins, mongoURI } = require('./lib/const');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const notFound = require('./middleware/notFound');
 const authorizationRouter = require('./route/authorization');
@@ -13,7 +13,7 @@ const authorizationRouter = require('./route/authorization');
 const app = express();
 const { PORT = 3001 } = process.env;
 
-mongoose.connect('mongodb://127.0.0.1:27017/newsApi');
+mongoose.connect(mongoURI);
 
 app.use(express.json());
 
