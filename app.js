@@ -9,6 +9,7 @@ const { signupValidator, signinValidator, allowedOrigins, mongoURI } = require('
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const notFound = require('./middleware/notFound');
 const authorizationRouter = require('./route/authorization');
+const { getNews } = require('./handler/news');
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -22,6 +23,8 @@ app.use(requestLogger);
 app.post('/signup', cors({ origin: allowedOrigins }), signupValidator, createUser);
 
 app.post('/signin', cors({ origin: allowedOrigins, credentials: true }), signinValidator, signIn);
+
+app.get('/news', cors({ origin: allowedOrigins }), getNews)
 
 app.use(authorizationRouter);
 
