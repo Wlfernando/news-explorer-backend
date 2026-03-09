@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../model/user');
-const { key, sameSite } = require('../lib/const');
+const { key, sameSite, secure, prependedHostCookieName } = require('../lib/const');
 const CastError = require('../lib/error/CastError');
 const Conflict = require('../lib/error/Conflict');
 
@@ -35,11 +35,13 @@ exports.signIn = function signIn(req, res, next) {
         .cookie('storage-access', 'true', {
           maxAge: sevenDays,
           sameSite,
+          secure,
         })
-        .cookie('authentication', `Bearer ${token}`, {
+        .cookie(prependedHostCookieName + 'authentication', `Bearer ${token}`, {
           maxAge: sevenDays,
           httpOnly: true,
           sameSite,
+          secure,
         })
         .end()
     })
@@ -58,11 +60,13 @@ exports.signOut = function signOut(req, res) {
     .cookie('storage-access', 'false', {
       maxAge: 0,
       sameSite,
+      secure,
     })
-    .cookie('authentication', `null`, {
+    .cookie(prependedHostCookieName + 'authentication', `null`, {
       maxAge: 0,
       httpOnly: true,
       sameSite,
+      secure,
     })
     .end()
 }
