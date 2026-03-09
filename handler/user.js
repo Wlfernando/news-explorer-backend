@@ -36,6 +36,7 @@ exports.signIn = function signIn(req, res, next) {
           maxAge: sevenDays,
           sameSite,
           secure,
+          path: '/never',
         })
         .cookie(prependedHostCookieName + 'authentication', `Bearer ${token}`, {
           maxAge: sevenDays,
@@ -61,6 +62,7 @@ exports.signOut = function signOut(req, res) {
       maxAge: 0,
       sameSite,
       secure,
+      path: '/never',
     })
     .cookie(prependedHostCookieName + 'authentication', `null`, {
       maxAge: 0,
