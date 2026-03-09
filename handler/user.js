@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../model/user');
-const { key } = require('../lib/const');
+const { key, sameSite } = require('../lib/const');
 const CastError = require('../lib/error/CastError');
 const Conflict = require('../lib/error/Conflict');
 
@@ -34,11 +34,12 @@ exports.signIn = function signIn(req, res, next) {
         .status(204)
         .cookie('storage-access', 'true', {
           maxAge: sevenDays,
+          sameSite,
         })
         .cookie('authentication', `Bearer ${token}`, {
           maxAge: sevenDays,
           httpOnly: true,
-          sameSite: true,
+          sameSite,
         })
         .end()
     })
@@ -56,11 +57,12 @@ exports.signOut = function signOut(req, res) {
     .status(205)
     .cookie('storage-access', 'false', {
       maxAge: 0,
+      sameSite,
     })
     .cookie('authentication', `null`, {
       maxAge: 0,
       httpOnly: true,
-      sameSite: true,
+      sameSite,
     })
     .end()
 }
