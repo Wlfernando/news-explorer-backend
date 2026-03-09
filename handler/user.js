@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../model/user');
-const { key, sameSite, secure, prependedHostCookieName } = require('../lib/const');
+const { key, sameSite, isProduction: secure, prependedHostCookieName } = require('../lib/const');
 const CastError = require('../lib/error/CastError');
 const Conflict = require('../lib/error/Conflict');
 

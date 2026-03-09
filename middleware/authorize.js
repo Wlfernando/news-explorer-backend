@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
-const { key, rejected } = require('../lib/const');
+const { key, rejected, isProduction } = require('../lib/const');
 
 module.exports = function authorize(req, res, next) {
-  const { cookies: { authentication } } = req;
+  const { cookies: { "__Host-authentication": auth, authentication: authDev } } = req;
+  const authentication = isProduction ? auth : authDev;
 
   if (!authentication || !authentication.startsWith('Bearer ')) {
     next(rejected);
