@@ -29,22 +29,18 @@ exports.signIn = function signIn(req, res, next) {
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, key, { expiresIn: '7d' });
       const sevenDays = 36e5 * 24 * 7;
+      const date = new Date(Date.now() + sevenDays).toUTCString();
 
       res
-        .status(204)
-        .cookie('storage-access', 'true', {
-          maxAge: sevenDays,
-          sameSite,
-          secure,
-          path: '/never',
-        })
+        .status(200)
+        .type('text/plain')
         .cookie(prependedHostCookieName + 'authentication', `Bearer ${token}`, {
           maxAge: sevenDays,
           httpOnly: true,
           sameSite,
           secure,
         })
-        .end()
+        .send(date)
     })
     .catch(next);
 };
@@ -58,12 +54,6 @@ exports.getMe = function getMe(req, res, next) {
 exports.signOut = function signOut(req, res) {
   res
     .status(205)
-    .cookie('storage-access', 'false', {
-      maxAge: 0,
-      sameSite,
-      secure,
-      path: '/never',
-    })
     .cookie(prependedHostCookieName + 'authentication', `null`, {
       maxAge: 0,
       httpOnly: true,
